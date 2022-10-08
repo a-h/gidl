@@ -1,5 +1,7 @@
 package model
 
+import "go/doc"
+
 func New() *Model {
 	return &Model{
 		Types: make(map[string]*Type),
@@ -10,12 +12,25 @@ type Model struct {
 	Types map[string]*Type
 }
 
-func (m *Model) AddType(typeID, name string, desc string, rawComments string) {
-	m.Types[typeID] = &Type{
-		ID:          typeID,
-		Name:        name,
-		Description: desc,
-		RawComments: rawComments,
+func (m *Model) SetTypeComment(typeID, comment string) {
+	t, ok := m.Types[typeID]
+	if !ok {
+		return
+	}
+	t.RawComments = comment
+	t.Description = doc.Synopsis(t.RawComments)
+}
+
+func (m *Model) SetFieldComment(typeID, fieldName, comment string) {
+	t, ok := m.Types[typeID]
+	if !ok {
+		return
+	}
+	for i, f := range t.Fields {
+		if f.Name == fieldName {
+			t.Fields[i].RawComments = comment
+			t.Fields[i].Description = doc.Synopsis(comment)
+		}
 	}
 }
 
@@ -30,13 +45,6 @@ type Type struct {
 	Fields      []*Field `json:"fields,omitempty"`
 	Traits      []Trait  `json:"traits,omitempty"`
 	RawComments string   `json:"rawComments,omitempty"`
-}
-
-func (t *Type) AddField(name, desc string) {
-	t.Fields = append(t.Fields, &Field{
-		Name:        name,
-		Description: desc,
-	})
 }
 
 type Trait string
@@ -71,6 +79,7 @@ type FieldType struct {
 }
 
 type Field struct {
+	ID string `json:"id"`
 	// Name of the wire representation of the type, e.g. field.
 	Name string `json:"name"`
 	// Description of the field usage.

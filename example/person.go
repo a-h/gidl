@@ -21,6 +21,8 @@ type Person struct {
 	// Parsed as asp.SliceExpr
 	PhoneNumbers []PhoneNumber
 	Address      Address
+	// Random array of numbers.
+	Random [3]int
 }
 
 type PhoneNumber struct {
