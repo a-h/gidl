@@ -1,15 +1,24 @@
 package model
 
-import "go/doc"
+import (
+	"fmt"
+	"go/doc"
+)
 
 func New() *Model {
-	return &Model{
+	m := &Model{
 		Types: make(map[string]*Type),
 	}
+	m.warnf = func(format string, a ...any) {
+		m.Warnings = append(m.Warnings, fmt.Sprintf(format, a))
+	}
+	return m
 }
 
 type Model struct {
-	Types map[string]*Type
+	Types    map[string]*Type `json:"types"`
+	warnf    func(format string, a ...any)
+	Warnings []string `json:"warnings"`
 }
 
 func (m *Model) SetTypeComment(typeID, comment string) {
@@ -17,8 +26,8 @@ func (m *Model) SetTypeComment(typeID, comment string) {
 	if !ok {
 		return
 	}
-	t.RawComments = comment
-	t.Description = doc.Synopsis(t.RawComments)
+	t.Comments = comment
+	t.Description = doc.Synopsis(t.Comments)
 }
 
 func (m *Model) SetFieldComment(typeID, fieldName, comment string) {
@@ -28,10 +37,12 @@ func (m *Model) SetFieldComment(typeID, fieldName, comment string) {
 	}
 	for i, f := range t.Fields {
 		if f.Name == fieldName {
-			t.Fields[i].RawComments = comment
+			t.Fields[i].Comments = comment
 			t.Fields[i].Description = doc.Synopsis(comment)
+			return
 		}
 	}
+	m.warnf("%s - failed to set comment on field name %q", typeID, fieldName)
 }
 
 type Type struct {
@@ -44,7 +55,7 @@ type Type struct {
 	Description string   `json:"desc,omitempty"`
 	Fields      []*Field `json:"fields,omitempty"`
 	Traits      []Trait  `json:"traits,omitempty"`
-	RawComments string   `json:"rawComments,omitempty"`
+	Comments    string   `json:"comments,omitempty"`
 }
 
 type Trait string
@@ -90,8 +101,8 @@ type Field struct {
 	// abc
 	// 123
 	// 0x4A
-	Examples    []string `json:"examples,omitempty"`
-	Traits      []Trait  `json:"traits,omitempty"`
-	RawComments string   `json:"rawComments,omitempty"`
-	Tags        string   `json:"tags,omitempty"`
+	Examples []string `json:"examples,omitempty"`
+	Traits   []Trait  `json:"traits,omitempty"`
+	Comments string   `json:"comments,omitempty"`
+	Tags     string   `json:"tags,omitempty"`
 }
