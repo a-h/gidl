@@ -5,8 +5,11 @@ import (
 	"testing"
 
 	"github.com/a-h/gidl/model"
+	"github.com/a-h/gidl/model/tests/anonymous"
+	"github.com/a-h/gidl/model/tests/chans"
 	"github.com/a-h/gidl/model/tests/enum"
 	"github.com/a-h/gidl/model/tests/functions"
+	"github.com/a-h/gidl/model/tests/functiontypes"
 	"github.com/a-h/gidl/model/tests/pointers"
 	"github.com/a-h/gidl/model/tests/privatetypes"
 	"github.com/a-h/gidl/model/tests/publictypes"
@@ -44,6 +47,21 @@ func TestGet(t *testing.T) {
 			name:     "functions and method receivers are ignored",
 			pkg:      "github.com/a-h/gidl/model/tests/functions",
 			expected: functions.Expected,
+		},
+		{
+			name:     "fields of type channel are ignored",
+			pkg:      "github.com/a-h/gidl/model/tests/chans",
+			expected: chans.Expected,
+		},
+		{
+			name:     "anonymous structs are ignored",
+			pkg:      "github.com/a-h/gidl/model/tests/anonymous",
+			expected: anonymous.Expected,
+		},
+		{
+			name:     "function fields and function types are ignored",
+			pkg:      "github.com/a-h/gidl/model/tests/functiontypes",
+			expected: functiontypes.Expected,
 		},
 	}
 

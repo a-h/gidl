@@ -44,7 +44,10 @@ func Get(packageName string) (m *Model, err error) {
 				if !isNamedType {
 					continue
 				}
-				m.AddType(n)
+				if _, isFunctionType := n.Underlying().(*types.Signature); isFunctionType {
+					continue
+				}
+				m.addType(n)
 			}
 		}
 	}
@@ -125,4 +128,3 @@ func getSortedKeys(defs map[*ast.Ident]types.Object) []*ast.Ident {
 	})
 	return op
 }
-

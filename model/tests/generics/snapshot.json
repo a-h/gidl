@@ -1,0 +1,31 @@
+{
+  "types": {
+    "github.com/a-h/gidl/model/tests/generics.Data": {
+      "id": "github.com/a-h/gidl/model/tests/generics.Data",
+      "name": "Data",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/generics.Data.AllowThis",
+          "name": "AllowThis",
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": false
+          }
+        }
+      ]
+    },
+    "github.com/a-h/gidl/model/tests/generics.DataOfT[T string|int]": {
+      "id": "github.com/a-h/gidl/model/tests/generics.DataOfT[T string|int]",
+      "name": "DataOfT"
+    }
+  },
+  "warnings": [
+    "github.com/a-h/gidl/model/tests/generics.Data.String - field type \"github.com/a-h/gidl/model/tests/generics.DataOfT[string]\" cannot be mapped",
+    "github.com/a-h/gidl/model/tests/generics.Data.Int - field type \"github.com/a-h/gidl/model/tests/generics.DataOfT[int]\" cannot be mapped",
+    "github.com/a-h/gidl/model/tests/generics.DataOfT[T string|int].Field - field type \"typeparam: T\" cannot be mapped",
+    "github.com/a-h/gidl/model/tests/generics.Data - failed to set comment on field name \"String\"",
+    "github.com/a-h/gidl/model/tests/generics.Data - failed to set comment on field name \"Int\""
+  ]
+}

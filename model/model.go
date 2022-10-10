@@ -22,7 +22,7 @@ type Model struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
-func (m *Model) AddType(n *types.Named) {
+func (m *Model) addType(n *types.Named) {
 	t := Type{
 		ID:     n.Origin().String(),
 		Name:   n.Obj().Name(),
@@ -57,9 +57,6 @@ func (m *Model) getFields(n *types.Named) (fields []*Field) {
 
 func getFieldType(t types.Type) (is Is, desc string, ok bool) {
 	switch t := t.(type) {
-	case *types.Struct:
-		desc = t.String()
-		return
 	case *types.Basic:
 		desc = t.String()
 		is.Scalar = &Scalar{
@@ -75,9 +72,6 @@ func getFieldType(t types.Type) (is Is, desc string, ok bool) {
 		is.Array = &Array{Of: of}
 		is.Nullable = true
 		return is, t.String(), true
-	case *types.Tuple:
-		desc = t.String()
-		return
 	case *types.Array:
 		of, desc, ok := getFieldType(t.Elem())
 		if !ok {
@@ -87,10 +81,10 @@ func getFieldType(t types.Type) (is Is, desc string, ok bool) {
 		is.Nullable = false
 		return is, t.String(), true
 	case *types.Interface:
-		desc = t.String()
+		desc = "interface: " + t.String()
 		return
 	case *types.TypeParam:
-		desc = t.String()
+		desc = "typeparam: " + t.String()
 		return
 	case *types.Pointer:
 		is, desc, ok = getFieldType(t.Elem())
@@ -99,9 +93,6 @@ func getFieldType(t types.Type) (is Is, desc string, ok bool) {
 		}
 		is.Nullable = true
 		return is, t.String(), true
-	case *types.Union:
-		desc = t.String()
-		return
 	case *types.Map:
 		var k, v Is
 		if k, desc, ok = getFieldType(t.Key()); !ok {
@@ -116,14 +107,16 @@ func getFieldType(t types.Type) (is Is, desc string, ok bool) {
 		}
 		is.Nullable = true
 		return is, t.String(), true
-	case *types.Signature:
-		desc = t.String()
-		return
 	case *types.Named:
+		desc = t.String()
+		// Disallow generics.
+		if t.TypeParams().Len() > 0 {
+			return 
+		}
 		is.Scalar = &Scalar{
 			Of: TypeName(t.Origin().String()),
 		}
-		return is, t.String(), true
+		return is, desc, true
 	}
 	desc = t.String()
 	return
