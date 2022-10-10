@@ -23,6 +23,8 @@ type Person struct {
 	Address      Address
 	// Random array of numbers.
 	Random [3]int
+	// VehicleOwnership is how many vehicles the person has.
+	VehicleOwnership VehicleOwnership
 }
 
 type PhoneNumber struct {
@@ -36,10 +38,18 @@ type Address struct {
 
 // Go doesn't have a specific enum type.
 // But this idiom is the usual way of defining the allowed values.
-//TODO: Represent these as possible values in the object model.
 type PhoneType string
 
 const (
-	PhoneTypeMobile = "mobile"
-	PhoneTypeLand   = "land"
+	// PhoneTypeMobile is a mobile phone.
+	PhoneTypeMobile PhoneType = "mobile"
+	PhoneTypeLand   PhoneType = "land"
+)
+
+type VehicleOwnership int
+
+const (
+	VehicleOwnershipNoCars VehicleOwnership = iota
+	VehicleOwnershipOneCar
+	VehicleOwnershipMoreThanOneCar
 )

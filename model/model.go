@@ -45,17 +45,40 @@ func (m *Model) SetFieldComment(typeID, fieldName, comment string) {
 	m.warnf("%s - failed to set comment on field name %q", typeID, fieldName)
 }
 
+func (m *Model) SetEnumStringValue(typeID, value, comment string) {
+	t, ok := m.Types[typeID]
+	if !ok {
+		return
+	}
+	t.EnumStringValues = append(t.EnumStringValues, EnumValue[string]{Value: value, Description: comment})
+}
+
+func (m *Model) SetEnumIntValue(typeID string, value int64, comment string) {
+	t, ok := m.Types[typeID]
+	if !ok {
+		return
+	}
+	t.EnumIntValues = append(t.EnumIntValues, EnumValue[int64]{Value: value, Description: comment})
+}
+
 type Type struct {
 	// ID of the type.
 	// For Go based sources, it is the fully qualified type name.
 	// github.com/a-h/gidl/model.Type
 	ID string `json:"id"`
 	// Name of the wire representation of the type, e.g. field.
-	Name        string   `json:"name"`
-	Description string   `json:"desc,omitempty"`
-	Fields      []*Field `json:"fields,omitempty"`
-	Traits      []Trait  `json:"traits,omitempty"`
-	Comments    string   `json:"comments,omitempty"`
+	Name             string              `json:"name"`
+	Description      string              `json:"desc,omitempty"`
+	Fields           []*Field            `json:"fields,omitempty"`
+	Traits           []Trait             `json:"traits,omitempty"`
+	Comments         string              `json:"comments,omitempty"`
+	EnumStringValues []EnumValue[string] `json:"enum_string,omitempty"`
+	EnumIntValues    []EnumValue[int64]  `json:"enum_int,omitempty"`
+}
+
+type EnumValue[T string | int64] struct {
+	Value       T      `json:"value"`
+	Description string `json:"desc"`
 }
 
 type Trait string

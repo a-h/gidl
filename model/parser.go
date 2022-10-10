@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"go/ast"
+	"go/constant"
 	"go/types"
 	"reflect"
 	"sort"
@@ -32,14 +33,12 @@ func GetPackageInfo(packageName string) (m *Model, err error) {
 		identifiers := getSortedKeys(pkg.TypesInfo.Defs)
 		for _, identifier := range identifiers {
 			definition := pkg.TypesInfo.Defs[identifier]
-			if identifier != nil {
-				fmt.Println("id:", identifier.Name)
-				if identifier.Obj == nil || identifier.Obj.Kind != ast.Typ {
-					continue
-				}
-				fmt.Println("obj kind:", identifier.Obj.Kind.String())
+			// Anything to be considered must have a definition.
+			if definition == nil {
+				continue
 			}
-			if definition != nil {
+			// Named types.
+			if identifier.Obj != nil && identifier.Obj.Kind == ast.Typ {
 				n, isNamedType := definition.Type().(*types.Named)
 				if !isNamedType {
 					continue
@@ -65,6 +64,26 @@ func GetPackageInfo(packageName string) (m *Model, err error) {
 					m.SetTypeComment(typeID, lastComment)
 				case *ast.GenDecl:
 					lastComment = x.Doc.Text()
+				case *ast.ValueSpec:
+					// Identify constants that make up string and integer enums.
+					for _, name := range x.Names {
+						c := pkg.TypesInfo.ObjectOf(name).(*types.Const)
+						typeID := c.Type().String()
+						if _, ok := m.Types[typeID]; !ok {
+							// Cannot find a type that this constant belongs to.
+							// So it's not an enum value.
+							continue
+						}
+						switch c.Val().Kind() {
+						case constant.String:
+							m.SetEnumStringValue(typeID, constant.StringVal(c.Val()), x.Doc.Text())
+						case constant.Int:
+							v, _ := constant.Int64Val(c.Val())
+							m.SetEnumIntValue(typeID, v, x.Doc.Text())
+						default:
+							m.warnf("Constant %q does not have a type of integer or string, and can't be included in an enum", name)
+						}
+					}
 				case *ast.Field:
 					if typ == "" {
 						break
