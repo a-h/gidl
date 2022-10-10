@@ -10,7 +10,7 @@ func New() *Model {
 		Types: make(map[string]*Type),
 	}
 	m.warnf = func(format string, a ...any) {
-		m.Warnings = append(m.Warnings, fmt.Sprintf(format, a))
+		m.Warnings = append(m.Warnings, fmt.Sprintf(format, a...))
 	}
 	return m
 }

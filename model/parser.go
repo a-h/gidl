@@ -25,9 +25,7 @@ func Get(packageName string) (m *Model, err error) {
 	//TODO: Ensure that imports are loaded, and load the correct version of modules based on that.
 	// Then, create documentation for any 3rd party modules too.
 
-	m = &Model{
-		Types: map[string]*Type{},
-	}
+	m = New()
 	// Read through the definitions.
 	for _, pkg := range pkgs {
 		identifiers := getSortedKeys(pkg.TypesInfo.Defs)
@@ -91,6 +89,9 @@ func Get(packageName string) (m *Model, err error) {
 							m.warnf("Constant %q does not have a type of integer or string, and can't be included in an enum", name)
 						}
 					}
+				case *ast.FuncDecl:
+					// Skip functions.
+					return false
 				case *ast.Field:
 					if typ == "" {
 						break
@@ -187,7 +188,6 @@ func getFieldType(t types.Type) Is {
 	case *types.TypeParam:
 		panic("type param")
 	case *types.Pointer:
-		//TODO: Test pointers to pointers.
 		ft := getFieldType(t.Elem())
 		ft.Nullable = true
 		return ft

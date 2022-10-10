@@ -1,0 +1,36 @@
+{
+  "types": {
+    "github.com/a-h/gidl/model/tests/functions.Data": {
+      "id": "github.com/a-h/gidl/model/tests/functions.Data",
+      "name": "Data",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/functions.Data.A",
+          "name": "A",
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": false
+          }
+        }
+      ]
+    },
+    "github.com/a-h/gidl/model/tests/functions.DontIgnoreMe": {
+      "id": "github.com/a-h/gidl/model/tests/functions.DontIgnoreMe",
+      "name": "DontIgnoreMe",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/functions.DontIgnoreMe.Please",
+          "name": "Please",
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": false
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "types": {
+    "github.com/a-h/gidl/model/tests/pointers.Public": {
+      "id": "github.com/a-h/gidl/model/tests/pointers.Public",
+      "name": "Public",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/pointers.Public.A",
+          "name": "A",
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": true
+          }
+        }
+      ]
+    }
+  }
+}

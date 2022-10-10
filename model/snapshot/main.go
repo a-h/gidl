@@ -32,6 +32,7 @@ func main() {
 		fmt.Printf("error creating output file %q: %v\n", *flagOutput, err)
 		os.Exit(1)
 	}
+	fmt.Printf("snapshotting package %q\n", *flagPkg)
 	enc := json.NewEncoder(f)
 	enc.SetIndent("", "  ")
 	err = enc.Encode(m)

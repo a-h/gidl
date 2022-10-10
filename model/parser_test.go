@@ -6,6 +6,8 @@ import (
 
 	"github.com/a-h/gidl/model"
 	"github.com/a-h/gidl/model/tests/enum"
+	"github.com/a-h/gidl/model/tests/functions"
+	"github.com/a-h/gidl/model/tests/pointers"
 	"github.com/a-h/gidl/model/tests/privatetypes"
 	"github.com/a-h/gidl/model/tests/publictypes"
 	"github.com/google/go-cmp/cmp"
@@ -32,6 +34,16 @@ func TestGet(t *testing.T) {
 			name:     "string and integer enums are supported",
 			pkg:      "github.com/a-h/gidl/model/tests/enum",
 			expected: enum.Expected,
+		},
+		{
+			name:     "pointers to pointers become a single pointer",
+			pkg:      "github.com/a-h/gidl/model/tests/pointers",
+			expected: pointers.Expected,
+		},
+		{
+			name:     "functions and method receivers are ignored",
+			pkg:      "github.com/a-h/gidl/model/tests/functions",
+			expected: functions.Expected,
 		},
 	}
 
