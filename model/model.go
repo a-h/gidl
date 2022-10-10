@@ -129,7 +129,7 @@ func getFieldType(t types.Type) (is Is, desc string, ok bool) {
 	return
 }
 
-func (m *Model) SetTypeComment(typeID, comment string) {
+func (m *Model) setTypeComment(typeID, comment string) {
 	t, ok := m.Types[typeID]
 	if !ok {
 		return
@@ -138,7 +138,7 @@ func (m *Model) SetTypeComment(typeID, comment string) {
 	t.Description = doc.Synopsis(t.Comments)
 }
 
-func (m *Model) SetFieldComment(typeID, fieldName, comment string) {
+func (m *Model) setFieldComment(typeID, fieldName, comment string) {
 	t, ok := m.Types[typeID]
 	if !ok {
 		return
@@ -153,7 +153,7 @@ func (m *Model) SetFieldComment(typeID, fieldName, comment string) {
 	m.warnf("%s - failed to set comment on field name %q", typeID, fieldName)
 }
 
-func (m *Model) SetEnumStringValue(typeID, value, comment string) {
+func (m *Model) setEnumStringValue(typeID, value, comment string) {
 	t, ok := m.Types[typeID]
 	if !ok {
 		return
@@ -161,7 +161,7 @@ func (m *Model) SetEnumStringValue(typeID, value, comment string) {
 	t.EnumStringValues = append(t.EnumStringValues, EnumValue[string]{Value: value, Description: comment})
 }
 
-func (m *Model) SetEnumIntValue(typeID string, value int64, comment string) {
+func (m *Model) setEnumIntValue(typeID string, value int64, comment string) {
 	t, ok := m.Types[typeID]
 	if !ok {
 		return

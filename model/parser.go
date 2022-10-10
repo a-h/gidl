@@ -61,7 +61,7 @@ func Get(packageName string) (m *Model, err error) {
 						break
 					}
 					typeID := fmt.Sprintf("%s.%s", packageName, typ)
-					m.SetTypeComment(typeID, lastComment)
+					m.setTypeComment(typeID, lastComment)
 				case *ast.GenDecl:
 					lastComment = x.Doc.Text()
 				case *ast.ValueSpec:
@@ -79,10 +79,10 @@ func Get(packageName string) (m *Model, err error) {
 						}
 						switch c.Val().Kind() {
 						case constant.String:
-							m.SetEnumStringValue(typeID, constant.StringVal(c.Val()), x.Doc.Text())
+							m.setEnumStringValue(typeID, constant.StringVal(c.Val()), x.Doc.Text())
 						case constant.Int:
 							v, _ := constant.Int64Val(c.Val())
-							m.SetEnumIntValue(typeID, v, x.Doc.Text())
+							m.setEnumIntValue(typeID, v, x.Doc.Text())
 						default:
 							m.warnf("Constant %q does not have a type of integer or string, and can't be included in an enum", name)
 						}
@@ -95,7 +95,7 @@ func Get(packageName string) (m *Model, err error) {
 						break
 					}
 					typeID := fmt.Sprintf("%s.%s", packageName, typ)
-					m.SetFieldComment(typeID, getFieldName(x), x.Doc.Text())
+					m.setFieldComment(typeID, getFieldName(x), x.Doc.Text())
 				}
 				return true
 			})
