@@ -1,0 +1,60 @@
+{
+  "types": {
+    "github.com/a-h/gidl/model/tests/enum.IntEnum": {
+      "id": "github.com/a-h/gidl/model/tests/enum.IntEnum",
+      "name": "IntEnum",
+      "enum_int": [
+        {
+          "value": 0,
+          "desc": ""
+        },
+        {
+          "value": 1,
+          "desc": ""
+        },
+        {
+          "value": 2,
+          "desc": ""
+        }
+      ]
+    },
+    "github.com/a-h/gidl/model/tests/enum.Public": {
+      "id": "github.com/a-h/gidl/model/tests/enum.Public",
+      "name": "Public",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/enum.Public.A",
+          "name": "A",
+          "type": {
+            "name": "github.com/a-h/gidl/model/tests/enum.StringEnum"
+          }
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/enum.Public.B",
+          "name": "B",
+          "type": {
+            "name": "github.com/a-h/gidl/model/tests/enum.IntEnum"
+          }
+        }
+      ]
+    },
+    "github.com/a-h/gidl/model/tests/enum.StringEnum": {
+      "id": "github.com/a-h/gidl/model/tests/enum.StringEnum",
+      "name": "StringEnum",
+      "enum_string": [
+        {
+          "value": "A",
+          "desc": ""
+        },
+        {
+          "value": "B",
+          "desc": ""
+        },
+        {
+          "value": "C",
+          "desc": ""
+        }
+      ]
+    }
+  }
+}

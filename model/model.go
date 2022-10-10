@@ -18,7 +18,7 @@ func New() *Model {
 type Model struct {
 	Types    map[string]*Type `json:"types"`
 	warnf    func(format string, a ...any)
-	Warnings []string `json:"warnings"`
+	Warnings []string `json:"warnings,omitempty"`
 }
 
 func (m *Model) SetTypeComment(typeID, comment string) {

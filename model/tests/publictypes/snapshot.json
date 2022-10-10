@@ -1,0 +1,24 @@
+{
+  "types": {
+    "github.com/a-h/gidl/model/tests/publictypes.Public": {
+      "id": "github.com/a-h/gidl/model/tests/publictypes.Public",
+      "name": "Public",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/publictypes.Public.A",
+          "name": "A",
+          "type": {
+            "name": "string"
+          }
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/publictypes.Public.B",
+          "name": "B",
+          "type": {
+            "name": "string"
+          }
+        }
+      ]
+    }
+  }
+}

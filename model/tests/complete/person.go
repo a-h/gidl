@@ -1,4 +1,4 @@
-package example
+package complete
 
 import (
 	"github.com/google/uuid"

@@ -1,0 +1,154 @@
+{
+  "types": {
+    "github.com/a-h/gidl/model/tests/complete.Address": {
+      "id": "github.com/a-h/gidl/model/tests/complete.Address",
+      "name": "Address",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.Address.Line1",
+          "name": "Line1",
+          "type": {
+            "name": "string"
+          }
+        }
+      ]
+    },
+    "github.com/a-h/gidl/model/tests/complete.Person": {
+      "id": "github.com/a-h/gidl/model/tests/complete.Person",
+      "name": "Person",
+      "desc": "Person that exists.",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.Person.ID",
+          "name": "ID",
+          "desc": "ID is a UUID value.",
+          "type": {
+            "name": "github.com/google/uuid.UUID"
+          },
+          "comments": "ID is a UUID value.\nParsed as ast.SelectorExpr\n"
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.Person.IDPtr",
+          "name": "IDPtr",
+          "desc": "IDPtr is a pointer to a UUID.",
+          "type": {
+            "name": "github.com/google/uuid.UUID",
+            "optional": true
+          },
+          "comments": "IDPtr is a pointer to a UUID.\nParsed as ast.StarExpr\n"
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.Person.Name",
+          "name": "Name",
+          "desc": "Name of the person.",
+          "type": {
+            "name": "string"
+          },
+          "comments": "Name of the person.\n",
+          "tags": "json:\"name\""
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.Person.Age",
+          "name": "Age",
+          "desc": "Age of the person.",
+          "type": {
+            "name": "int"
+          },
+          "comments": "Age of the person.\n",
+          "tags": "json:\"age\""
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.Person.PhoneNumbers",
+          "name": "PhoneNumbers",
+          "desc": "PhoneNumbers is an array of numbers.",
+          "type": {
+            "name": "github.com/a-h/gidl/model/tests/complete.PhoneNumber",
+            "optional": true,
+            "multiple": true
+          },
+          "comments": "PhoneNumbers is an array of numbers.\nParsed as asp.SliceExpr\n"
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.Person.Address",
+          "name": "Address",
+          "type": {
+            "name": "github.com/a-h/gidl/model/tests/complete.Address"
+          }
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.Person.Random",
+          "name": "Random",
+          "desc": "Random array of numbers.",
+          "type": {
+            "name": "int"
+          },
+          "comments": "Random array of numbers.\n"
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.Person.VehicleOwnership",
+          "name": "VehicleOwnership",
+          "desc": "VehicleOwnership is how many vehicles the person has.",
+          "type": {
+            "name": "github.com/a-h/gidl/model/tests/complete.VehicleOwnership"
+          },
+          "comments": "VehicleOwnership is how many vehicles the person has.\n"
+        }
+      ],
+      "comments": "Person that exists.\n"
+    },
+    "github.com/a-h/gidl/model/tests/complete.PhoneNumber": {
+      "id": "github.com/a-h/gidl/model/tests/complete.PhoneNumber",
+      "name": "PhoneNumber",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.PhoneNumber.Type",
+          "name": "Type",
+          "type": {
+            "name": "github.com/a-h/gidl/model/tests/complete.PhoneType"
+          }
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/complete.PhoneNumber.Number",
+          "name": "Number",
+          "type": {
+            "name": "string"
+          }
+        }
+      ]
+    },
+    "github.com/a-h/gidl/model/tests/complete.PhoneType": {
+      "id": "github.com/a-h/gidl/model/tests/complete.PhoneType",
+      "name": "PhoneType",
+      "desc": "Go doesn't have a specific enum type.",
+      "comments": "Go doesn't have a specific enum type.\nBut this idiom is the usual way of defining the allowed values.\n",
+      "enum_string": [
+        {
+          "value": "mobile",
+          "desc": "PhoneTypeMobile is a mobile phone.\n"
+        },
+        {
+          "value": "land",
+          "desc": ""
+        }
+      ]
+    },
+    "github.com/a-h/gidl/model/tests/complete.VehicleOwnership": {
+      "id": "github.com/a-h/gidl/model/tests/complete.VehicleOwnership",
+      "name": "VehicleOwnership",
+      "enum_int": [
+        {
+          "value": 0,
+          "desc": ""
+        },
+        {
+          "value": 1,
+          "desc": ""
+        },
+        {
+          "value": 2,
+          "desc": ""
+        }
+      ]
+    }
+  }
+}

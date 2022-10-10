@@ -12,7 +12,7 @@ import (
 	"golang.org/x/tools/go/packages"
 )
 
-func GetPackageInfo(packageName string) (m *Model, err error) {
+func Get(packageName string) (m *Model, err error) {
 	config := &packages.Config{
 		Mode: packages.NeedTypes | packages.NeedTypesInfo | packages.NeedSyntax,
 	}
@@ -32,6 +32,10 @@ func GetPackageInfo(packageName string) (m *Model, err error) {
 	for _, pkg := range pkgs {
 		identifiers := getSortedKeys(pkg.TypesInfo.Defs)
 		for _, identifier := range identifiers {
+			// Only process exported types.
+			if !identifier.IsExported() {
+				continue
+			}
 			definition := pkg.TypesInfo.Defs[identifier]
 			// Anything to be considered must have a definition.
 			if definition == nil {
@@ -67,7 +71,10 @@ func GetPackageInfo(packageName string) (m *Model, err error) {
 				case *ast.ValueSpec:
 					// Identify constants that make up string and integer enums.
 					for _, name := range x.Names {
-						c := pkg.TypesInfo.ObjectOf(name).(*types.Const)
+						c, isConstant := pkg.TypesInfo.ObjectOf(name).(*types.Const)
+						if !isConstant {
+							continue
+						}
 						typeID := c.Type().String()
 						if _, ok := m.Types[typeID]; !ok {
 							// Cannot find a type that this constant belongs to.
