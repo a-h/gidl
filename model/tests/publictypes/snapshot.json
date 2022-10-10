@@ -7,15 +7,21 @@
         {
           "id": "github.com/a-h/gidl/model/tests/publictypes.Public.A",
           "name": "A",
-          "type": {
-            "name": "string"
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": false
           }
         },
         {
           "id": "github.com/a-h/gidl/model/tests/publictypes.Public.B",
           "name": "B",
-          "type": {
-            "name": "string"
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": false
           }
         }
       ]

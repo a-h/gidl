@@ -7,8 +7,11 @@
         {
           "id": "github.com/a-h/gidl/model/tests/complete.Address.Line1",
           "name": "Line1",
-          "type": {
-            "name": "string"
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": false
           }
         }
       ]
@@ -22,8 +25,11 @@
           "id": "github.com/a-h/gidl/model/tests/complete.Person.ID",
           "name": "ID",
           "desc": "ID is a UUID value.",
-          "type": {
-            "name": "github.com/google/uuid.UUID"
+          "is": {
+            "scalar": {
+              "of": "github.com/google/uuid.UUID"
+            },
+            "nullable": false
           },
           "comments": "ID is a UUID value.\nParsed as ast.SelectorExpr\n"
         },
@@ -31,9 +37,11 @@
           "id": "github.com/a-h/gidl/model/tests/complete.Person.IDPtr",
           "name": "IDPtr",
           "desc": "IDPtr is a pointer to a UUID.",
-          "type": {
-            "name": "github.com/google/uuid.UUID",
-            "optional": true
+          "is": {
+            "scalar": {
+              "of": "github.com/google/uuid.UUID"
+            },
+            "nullable": true
           },
           "comments": "IDPtr is a pointer to a UUID.\nParsed as ast.StarExpr\n"
         },
@@ -41,8 +49,11 @@
           "id": "github.com/a-h/gidl/model/tests/complete.Person.Name",
           "name": "Name",
           "desc": "Name of the person.",
-          "type": {
-            "name": "string"
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": false
           },
           "comments": "Name of the person.\n",
           "tags": "json:\"name\""
@@ -51,8 +62,11 @@
           "id": "github.com/a-h/gidl/model/tests/complete.Person.Age",
           "name": "Age",
           "desc": "Age of the person.",
-          "type": {
-            "name": "int"
+          "is": {
+            "scalar": {
+              "of": "int"
+            },
+            "nullable": false
           },
           "comments": "Age of the person.\n",
           "tags": "json:\"age\""
@@ -61,26 +75,43 @@
           "id": "github.com/a-h/gidl/model/tests/complete.Person.PhoneNumbers",
           "name": "PhoneNumbers",
           "desc": "PhoneNumbers is an array of numbers.",
-          "type": {
-            "name": "github.com/a-h/gidl/model/tests/complete.PhoneNumber",
-            "optional": true,
-            "multiple": true
+          "is": {
+            "array": {
+              "of": {
+                "scalar": {
+                  "of": "github.com/a-h/gidl/model/tests/complete.PhoneNumber"
+                },
+                "nullable": false
+              }
+            },
+            "nullable": true
           },
           "comments": "PhoneNumbers is an array of numbers.\nParsed as asp.SliceExpr\n"
         },
         {
           "id": "github.com/a-h/gidl/model/tests/complete.Person.Address",
           "name": "Address",
-          "type": {
-            "name": "github.com/a-h/gidl/model/tests/complete.Address"
+          "is": {
+            "scalar": {
+              "of": "github.com/a-h/gidl/model/tests/complete.Address"
+            },
+            "nullable": false
           }
         },
         {
           "id": "github.com/a-h/gidl/model/tests/complete.Person.Random",
           "name": "Random",
           "desc": "Random array of numbers.",
-          "type": {
-            "name": "int"
+          "is": {
+            "array": {
+              "of": {
+                "scalar": {
+                  "of": "int"
+                },
+                "nullable": false
+              }
+            },
+            "nullable": false
           },
           "comments": "Random array of numbers.\n"
         },
@@ -88,8 +119,11 @@
           "id": "github.com/a-h/gidl/model/tests/complete.Person.VehicleOwnership",
           "name": "VehicleOwnership",
           "desc": "VehicleOwnership is how many vehicles the person has.",
-          "type": {
-            "name": "github.com/a-h/gidl/model/tests/complete.VehicleOwnership"
+          "is": {
+            "scalar": {
+              "of": "github.com/a-h/gidl/model/tests/complete.VehicleOwnership"
+            },
+            "nullable": false
           },
           "comments": "VehicleOwnership is how many vehicles the person has.\n"
         }
@@ -103,15 +137,21 @@
         {
           "id": "github.com/a-h/gidl/model/tests/complete.PhoneNumber.Type",
           "name": "Type",
-          "type": {
-            "name": "github.com/a-h/gidl/model/tests/complete.PhoneType"
+          "is": {
+            "scalar": {
+              "of": "github.com/a-h/gidl/model/tests/complete.PhoneType"
+            },
+            "nullable": false
           }
         },
         {
           "id": "github.com/a-h/gidl/model/tests/complete.PhoneNumber.Number",
           "name": "Number",
-          "type": {
-            "name": "string"
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": false
           }
         }
       ]

@@ -1,0 +1,121 @@
+{
+  "types": {
+    "github.com/a-h/gidl/model/tests/maps.MapValue": {
+      "id": "github.com/a-h/gidl/model/tests/maps.MapValue",
+      "name": "MapValue",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/maps.MapValue.FieldA",
+          "name": "FieldA",
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": false
+          }
+        }
+      ]
+    },
+    "github.com/a-h/gidl/model/tests/maps.Type": {
+      "id": "github.com/a-h/gidl/model/tests/maps.Type",
+      "name": "Type",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/maps.Type.MapOfStringToString",
+          "name": "MapOfStringToString",
+          "is": {
+            "map": {
+              "fromKey": {
+                "scalar": {
+                  "of": "string"
+                },
+                "nullable": false
+              },
+              "toValue": {
+                "scalar": {
+                  "of": "string"
+                },
+                "nullable": false
+              }
+            },
+            "nullable": true
+          }
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/maps.Type.MapOfMapsToMaps",
+          "name": "MapOfMapsToMaps",
+          "is": {
+            "map": {
+              "fromKey": {
+                "scalar": {
+                  "of": "string"
+                },
+                "nullable": false
+              },
+              "toValue": {
+                "map": {
+                  "fromKey": {
+                    "scalar": {
+                      "of": "string"
+                    },
+                    "nullable": false
+                  },
+                  "toValue": {
+                    "scalar": {
+                      "of": "string"
+                    },
+                    "nullable": false
+                  }
+                },
+                "nullable": true
+              }
+            },
+            "nullable": true
+          }
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/maps.Type.MapOfMapValue",
+          "name": "MapOfMapValue",
+          "is": {
+            "map": {
+              "fromKey": {
+                "scalar": {
+                  "of": "string"
+                },
+                "nullable": false
+              },
+              "toValue": {
+                "scalar": {
+                  "of": "github.com/a-h/gidl/model/tests/maps.MapValue"
+                },
+                "nullable": false
+              }
+            },
+            "nullable": true
+          }
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/maps.Type.MapOfMapValuesss",
+          "name": "MapOfMapValuesss",
+          "is": {
+            "map": {
+              "fromKey": {
+                "scalar": {
+                  "of": "github.com/a-h/gidl/model/tests/maps.MapValue"
+                },
+                "nullable": false
+              },
+              "toValue": {
+                "scalar": {
+                  "of": "github.com/a-h/gidl/model/tests/maps.MapValue"
+                },
+                "nullable": false
+              }
+            },
+            "nullable": true
+          }
+        }
+      ]
+    }
+  }
+}

@@ -103,23 +103,13 @@ func IsKnownFieldType(t string) bool {
 	return false
 }
 
-type FieldType struct {
-	Name TypeName `json:"name"`
-	// Optional is set to true if the field type is a pointer.
-	// Since slices and maps are also pointers, they're optional by default too.
-	Optional bool `json:"optional,omitempty"`
-	// Multiple is set to true if the field type is an array.
-	Multiple bool `json:"multiple,omitempty"`
-}
-
 type Field struct {
 	ID string `json:"id"`
 	// Name of the wire representation of the type, e.g. field.
 	Name string `json:"name"`
 	// Description of the field usage.
 	Description string `json:"desc,omitempty"`
-	// Type of the field.
-	Type FieldType `json:"type,omitempty"`
+	Is          Is     `json:"is"`
 	// Examples of the data stored in the field.
 	// abc
 	// 123
@@ -128,4 +118,23 @@ type Field struct {
 	Traits   []Trait  `json:"traits,omitempty"`
 	Comments string   `json:"comments,omitempty"`
 	Tags     string   `json:"tags,omitempty"`
+}
+
+type Is struct {
+	Scalar *Scalar `json:"scalar,omitempty"`
+	Array  *Array  `json:"array,omitempty"`
+	Map    *Map    `json:"map,omitempty"`
+	// Nullable is set to true if the field type is a pointer.
+	// Since slices and maps are also pointers, they're optional by default too.
+	Nullable bool `json:"nullable"`
+}
+type Scalar struct {
+	Of TypeName `json:"of,omitempty"`
+}
+type Array struct {
+	Of Is `json:"of,omitempty"`
+}
+type Map struct {
+	FromKey Is `json:"fromKey"`
+	ToValue Is `json:"toValue"`
 }

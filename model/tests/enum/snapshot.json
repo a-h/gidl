@@ -25,15 +25,21 @@
         {
           "id": "github.com/a-h/gidl/model/tests/enum.Public.A",
           "name": "A",
-          "type": {
-            "name": "github.com/a-h/gidl/model/tests/enum.StringEnum"
+          "is": {
+            "scalar": {
+              "of": "github.com/a-h/gidl/model/tests/enum.StringEnum"
+            },
+            "nullable": false
           }
         },
         {
           "id": "github.com/a-h/gidl/model/tests/enum.Public.B",
           "name": "B",
-          "type": {
-            "name": "github.com/a-h/gidl/model/tests/enum.IntEnum"
+          "is": {
+            "scalar": {
+              "of": "github.com/a-h/gidl/model/tests/enum.IntEnum"
+            },
+            "nullable": false
           }
         }
       ]

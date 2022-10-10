@@ -147,56 +147,67 @@ func getFields(n *types.Named) (fields []*Field) {
 		fields[i] = &Field{
 			ID:   fmt.Sprintf("%s.%s", n.Origin().String(), name),
 			Name: name,
-			Type: getFieldType(f.Type()),
+			Is:   getFieldType(f.Type()),
 			Tags: s.Tag(i),
 		}
 	}
 	return
 }
 
-func getFieldType(t types.Type) FieldType {
+func getFieldType(t types.Type) Is {
 	switch t := t.(type) {
 	case *types.Struct:
 		panic("struct")
 	case *types.Basic:
-		return FieldType{
-			Name: TypeName(t.String()),
+		return Is{
+			Scalar: &Scalar{
+				Of: TypeName(t.String()),
+			},
 		}
 	case *types.Chan:
 		panic("chan")
 	case *types.Slice:
-		return FieldType{
-			Name:     TypeName(t.Elem().String()),
-			Multiple: true,
-			Optional: true,
+		return Is{
+			Array: &Array{
+				Of: getFieldType(t.Elem()),
+			},
+			Nullable: true,
 		}
 	case *types.Tuple:
 		panic("tuple")
 	case *types.Array:
-		return FieldType{
-			Name:     TypeName(t.Elem().String()),
-			Optional: false,
-			Multiple: false,
+		return Is{
+			Array: &Array{
+				Of: getFieldType(t.Elem()),
+			},
+			Nullable: false,
 		}
 	case *types.Interface:
 		panic("interface")
 	case *types.TypeParam:
 		panic("type param")
 	case *types.Pointer:
-		return FieldType{
-			Name:     TypeName(t.Elem().String()),
-			Optional: true,
-			Multiple: false,
-		}
+		//TODO: Test pointers to pointers.
+		ft := getFieldType(t.Elem())
+		ft.Nullable = true
+		return ft
 	case *types.Union:
 		panic("union")
 	case *types.Map:
-		panic("map")
+		return Is{
+			Map: &Map{
+				FromKey: getFieldType(t.Key()),
+				ToValue: getFieldType(t.Elem()),
+			},
+			Nullable: true,
+		}
 	case *types.Signature:
 		panic("signature")
 	case *types.Named:
-		return FieldType{
-			Name: TypeName(t.Origin().String()),
+		return Is{
+			Scalar: &Scalar{
+				Of: TypeName(t.Origin().String()),
+			},
 		}
 	default:
 		panic(fmt.Sprintf("unknown: %s", reflect.TypeOf(t)))
