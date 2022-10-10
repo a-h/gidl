@@ -2,24 +2,14 @@
   "types": {
     "github.com/a-h/gidl/model/tests/functiontypes.Data": {
       "id": "github.com/a-h/gidl/model/tests/functiontypes.Data",
-      "name": "Data",
-      "fields": [
-        {
-          "id": "github.com/a-h/gidl/model/tests/functiontypes.Data.B",
-          "name": "B",
-          "is": {
-            "scalar": {
-              "of": "github.com/a-h/gidl/model/tests/functiontypes.FuncType"
-            },
-            "nullable": false
-          }
-        }
-      ]
+      "name": "Data"
     }
   },
   "warnings": [
     "github.com/a-h/gidl/model/tests/functiontypes.Data.A - field type \"func(test string)\" cannot be mapped",
+    "github.com/a-h/gidl/model/tests/functiontypes.Data.B - field type \"github.com/a-h/gidl/model/tests/functiontypes.FuncType\" cannot be mapped",
     "github.com/a-h/gidl/model/tests/functiontypes.Data - failed to set comment on field name \"A\"",
-    "github.com/a-h/gidl/model/tests/functiontypes.Data - failed to set comment on field name \"test\""
+    "github.com/a-h/gidl/model/tests/functiontypes.Data - failed to set comment on field name \"test\"",
+    "github.com/a-h/gidl/model/tests/functiontypes.Data - failed to set comment on field name \"B\""
   ]
 }

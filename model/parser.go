@@ -47,6 +47,9 @@ func Get(packageName string) (m *Model, err error) {
 				if _, isFunctionType := n.Underlying().(*types.Signature); isFunctionType {
 					continue
 				}
+				if _, isChan := n.Underlying().(*types.Chan); isChan {
+					continue
+				}
 				m.addType(n)
 			}
 		}

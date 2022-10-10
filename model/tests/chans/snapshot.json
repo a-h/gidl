@@ -7,6 +7,10 @@
   },
   "warnings": [
     "github.com/a-h/gidl/model/tests/chans.Data.AndIgnoreThisToo - field type \"chan string\" cannot be mapped",
-    "github.com/a-h/gidl/model/tests/chans.Data - failed to set comment on field name \"AndIgnoreThisToo\""
+    "github.com/a-h/gidl/model/tests/chans.Data.AndThisArrayOfChannels - field type \"chan string\" cannot be mapped",
+    "github.com/a-h/gidl/model/tests/chans.Data.AndThisAlias - field type \"github.com/a-h/gidl/model/tests/chans.ChanType\" cannot be mapped",
+    "github.com/a-h/gidl/model/tests/chans.Data - failed to set comment on field name \"AndIgnoreThisToo\"",
+    "github.com/a-h/gidl/model/tests/chans.Data - failed to set comment on field name \"AndThisArrayOfChannels\"",
+    "github.com/a-h/gidl/model/tests/chans.Data - failed to set comment on field name \"AndThisAlias\""
   ]
 }

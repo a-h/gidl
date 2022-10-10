@@ -111,7 +111,15 @@ func getFieldType(t types.Type) (is Is, desc string, ok bool) {
 		desc = t.String()
 		// Disallow generics.
 		if t.TypeParams().Len() > 0 {
-			return 
+			return
+		}
+		// Disallow function types.
+		if _, isFunction := t.Underlying().(*types.Signature); isFunction {
+			return
+		}
+		// Disallow channels.
+		if _, isChan := t.Underlying().(*types.Chan); isChan {
+			return
 		}
 		is.Scalar = &Scalar{
 			Of: TypeName(t.Origin().String()),

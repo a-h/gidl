@@ -6,7 +6,11 @@ import _ "embed"
 var Expected string
 
 type Data struct {
-	AndIgnoreThisToo chan string
+	AndIgnoreThisToo       chan string
+	AndThisArrayOfChannels []chan string
+	AndThisAlias           ChanType
 }
 
 var IgnoreThisChannel chan string
+
+type ChanType chan string
