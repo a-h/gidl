@@ -1,0 +1,12 @@
+{
+  "types": {
+    "github.com/a-h/gidl/model/tests/chans.Data": {
+      "id": "github.com/a-h/gidl/model/tests/chans.Data",
+      "name": "Data"
+    }
+  },
+  "warnings": [
+    "github.com/a-h/gidl/model/tests/chans.Data.AndIgnoreThisToo - field type \"chan string\" cannot be mapped",
+    "github.com/a-h/gidl/model/tests/chans.Data - failed to set comment on field name \"AndIgnoreThisToo\""
+  ]
+}

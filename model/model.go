@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"go/doc"
+	"go/types"
 )
 
 func New() *Model {
@@ -19,6 +20,113 @@ type Model struct {
 	Types    map[string]*Type `json:"types"`
 	warnf    func(format string, a ...any)
 	Warnings []string `json:"warnings,omitempty"`
+}
+
+func (m *Model) AddType(n *types.Named) {
+	t := Type{
+		ID:     n.Origin().String(),
+		Name:   n.Obj().Name(),
+		Fields: m.getFields(n),
+	}
+	m.Types[t.ID] = &t
+}
+
+func (m *Model) getFields(n *types.Named) (fields []*Field) {
+	s, ok := n.Underlying().(*types.Struct)
+	if !ok {
+		return
+	}
+	for i := 0; i < s.NumFields(); i++ {
+		f := s.Field(i)
+		name := f.Name()
+		id := fmt.Sprintf("%s.%s", n.Origin().String(), name)
+		is, desc, ok := getFieldType(f.Type())
+		if !ok {
+			m.warnf("%s - field type %q cannot be mapped", id, desc)
+			continue
+		}
+		fields = append(fields, &Field{
+			ID:   id,
+			Name: name,
+			Is:   is,
+			Tags: s.Tag(i),
+		})
+	}
+	return
+}
+
+func getFieldType(t types.Type) (is Is, desc string, ok bool) {
+	switch t := t.(type) {
+	case *types.Struct:
+		desc = t.String()
+		return
+	case *types.Basic:
+		desc = t.String()
+		is.Scalar = &Scalar{
+			Of: TypeName(t.String()),
+		}
+		ok = true
+		return
+	case *types.Slice:
+		of, desc, ok := getFieldType(t.Elem())
+		if !ok {
+			return is, desc, false
+		}
+		is.Array = &Array{Of: of}
+		is.Nullable = true
+		return is, t.String(), true
+	case *types.Tuple:
+		desc = t.String()
+		return
+	case *types.Array:
+		of, desc, ok := getFieldType(t.Elem())
+		if !ok {
+			return is, desc, false
+		}
+		is.Array = &Array{Of: of}
+		is.Nullable = false
+		return is, t.String(), true
+	case *types.Interface:
+		desc = t.String()
+		return
+	case *types.TypeParam:
+		desc = t.String()
+		return
+	case *types.Pointer:
+		is, desc, ok = getFieldType(t.Elem())
+		if !ok {
+			return is, desc, false
+		}
+		is.Nullable = true
+		return is, t.String(), true
+	case *types.Union:
+		desc = t.String()
+		return
+	case *types.Map:
+		var k, v Is
+		if k, desc, ok = getFieldType(t.Key()); !ok {
+			return is, desc, false
+		}
+		if v, desc, ok = getFieldType(t.Elem()); !ok {
+			return is, desc, false
+		}
+		is.Map = &Map{
+			FromKey: k,
+			ToValue: v,
+		}
+		is.Nullable = true
+		return is, t.String(), true
+	case *types.Signature:
+		desc = t.String()
+		return
+	case *types.Named:
+		is.Scalar = &Scalar{
+			Of: TypeName(t.Origin().String()),
+		}
+		return is, t.String(), true
+	}
+	desc = t.String()
+	return
 }
 
 func (m *Model) SetTypeComment(typeID, comment string) {
@@ -59,82 +167,4 @@ func (m *Model) SetEnumIntValue(typeID string, value int64, comment string) {
 		return
 	}
 	t.EnumIntValues = append(t.EnumIntValues, EnumValue[int64]{Value: value, Description: comment})
-}
-
-type Type struct {
-	// ID of the type.
-	// For Go based sources, it is the fully qualified type name.
-	// github.com/a-h/gidl/model.Type
-	ID string `json:"id"`
-	// Name of the wire representation of the type, e.g. field.
-	Name             string              `json:"name"`
-	Description      string              `json:"desc,omitempty"`
-	Fields           []*Field            `json:"fields,omitempty"`
-	Traits           []Trait             `json:"traits,omitempty"`
-	Comments         string              `json:"comments,omitempty"`
-	EnumStringValues []EnumValue[string] `json:"enum_string,omitempty"`
-	EnumIntValues    []EnumValue[int64]  `json:"enum_int,omitempty"`
-}
-
-type EnumValue[T string | int64] struct {
-	Value       T      `json:"value"`
-	Description string `json:"desc"`
-}
-
-type Trait string
-
-// TypeName is either a built-in type, or a fully qualified package name.
-type TypeName string
-
-const (
-	TypeNameInt     TypeName = "int"
-	TypeNameString  TypeName = "string"
-	TypeNameFloat64 TypeName = "float64"
-)
-
-var KnownFieldTypes = []TypeName{TypeNameInt, TypeNameString, TypeNameFloat64}
-
-func IsKnownFieldType(t string) bool {
-	for _, kft := range KnownFieldTypes {
-		if t == string(kft) {
-			return true
-		}
-	}
-	return false
-}
-
-type Field struct {
-	ID string `json:"id"`
-	// Name of the wire representation of the type, e.g. field.
-	Name string `json:"name"`
-	// Description of the field usage.
-	Description string `json:"desc,omitempty"`
-	Is          Is     `json:"is"`
-	// Examples of the data stored in the field.
-	// abc
-	// 123
-	// 0x4A
-	Examples []string `json:"examples,omitempty"`
-	Traits   []Trait  `json:"traits,omitempty"`
-	Comments string   `json:"comments,omitempty"`
-	Tags     string   `json:"tags,omitempty"`
-}
-
-type Is struct {
-	Scalar *Scalar `json:"scalar,omitempty"`
-	Array  *Array  `json:"array,omitempty"`
-	Map    *Map    `json:"map,omitempty"`
-	// Nullable is set to true if the field type is a pointer.
-	// Since slices and maps are also pointers, they're optional by default too.
-	Nullable bool `json:"nullable"`
-}
-type Scalar struct {
-	Of TypeName `json:"of,omitempty"`
-}
-type Array struct {
-	Of Is `json:"of,omitempty"`
-}
-type Map struct {
-	FromKey Is `json:"fromKey"`
-	ToValue Is `json:"toValue"`
 }

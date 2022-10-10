@@ -5,7 +5,6 @@ import (
 	"go/ast"
 	"go/constant"
 	"go/types"
-	"reflect"
 	"sort"
 	"strings"
 
@@ -45,8 +44,7 @@ func Get(packageName string) (m *Model, err error) {
 				if !isNamedType {
 					continue
 				}
-				t := getType(n)
-				m.Types[t.ID] = &t
+				m.AddType(n)
 			}
 		}
 	}
@@ -128,88 +126,3 @@ func getSortedKeys(defs map[*ast.Ident]types.Object) []*ast.Ident {
 	return op
 }
 
-func getType(n *types.Named) (t Type) {
-	return Type{
-		ID:     n.Origin().String(),
-		Name:   n.Obj().Name(),
-		Fields: getFields(n),
-	}
-}
-
-func getFields(n *types.Named) (fields []*Field) {
-	s, ok := n.Underlying().(*types.Struct)
-	if !ok {
-		return
-	}
-	fields = make([]*Field, s.NumFields())
-	for i := 0; i < s.NumFields(); i++ {
-		f := s.Field(i)
-		name := f.Name()
-		fields[i] = &Field{
-			ID:   fmt.Sprintf("%s.%s", n.Origin().String(), name),
-			Name: name,
-			Is:   getFieldType(f.Type()),
-			Tags: s.Tag(i),
-		}
-	}
-	return
-}
-
-func getFieldType(t types.Type) Is {
-	switch t := t.(type) {
-	case *types.Struct:
-		panic("struct")
-	case *types.Basic:
-		return Is{
-			Scalar: &Scalar{
-				Of: TypeName(t.String()),
-			},
-		}
-	case *types.Chan:
-		panic("chan")
-	case *types.Slice:
-		return Is{
-			Array: &Array{
-				Of: getFieldType(t.Elem()),
-			},
-			Nullable: true,
-		}
-	case *types.Tuple:
-		panic("tuple")
-	case *types.Array:
-		return Is{
-			Array: &Array{
-				Of: getFieldType(t.Elem()),
-			},
-			Nullable: false,
-		}
-	case *types.Interface:
-		panic("interface")
-	case *types.TypeParam:
-		panic("type param")
-	case *types.Pointer:
-		ft := getFieldType(t.Elem())
-		ft.Nullable = true
-		return ft
-	case *types.Union:
-		panic("union")
-	case *types.Map:
-		return Is{
-			Map: &Map{
-				FromKey: getFieldType(t.Key()),
-				ToValue: getFieldType(t.Elem()),
-			},
-			Nullable: true,
-		}
-	case *types.Signature:
-		panic("signature")
-	case *types.Named:
-		return Is{
-			Scalar: &Scalar{
-				Of: TypeName(t.Origin().String()),
-			},
-		}
-	default:
-		panic(fmt.Sprintf("unknown: %s", reflect.TypeOf(t)))
-	}
-}
