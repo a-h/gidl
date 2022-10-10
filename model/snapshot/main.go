@@ -40,4 +40,7 @@ func main() {
 		fmt.Printf("error encoding: %v\n", err)
 		os.Exit(1)
 	}
+	for _, warning := range m.Warnings {
+		fmt.Println(warning)
+	}
 }

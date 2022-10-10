@@ -121,6 +121,8 @@ func getFieldType(t types.Type) (is Is, desc string, ok bool) {
 		if _, isChan := t.Underlying().(*types.Chan); isChan {
 			return
 		}
+
+		// Allowed type.
 		is.Scalar = &Scalar{
 			Of: TypeName(t.Origin().String()),
 		}
