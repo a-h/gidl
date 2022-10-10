@@ -57,57 +57,65 @@ func Get(packageName string) (m *Model, err error) {
 	// Add the comments to the definitions.
 	for _, pkg := range pkgs {
 		for _, file := range pkg.Syntax {
-			var lastComment string
-			var typ string
-			ast.Inspect(file, func(n ast.Node) bool {
-				switch x := n.(type) {
-				case *ast.TypeSpec:
-					typ = x.Name.String()
-					if !ast.IsExported(typ) {
-						break
-					}
-					typeID := fmt.Sprintf("%s.%s", packageName, typ)
-					m.setTypeComment(typeID, lastComment)
-				case *ast.GenDecl:
-					lastComment = x.Doc.Text()
-				case *ast.ValueSpec:
-					// Identify constants that make up string and integer enums.
-					for _, name := range x.Names {
-						c, isConstant := pkg.TypesInfo.ObjectOf(name).(*types.Const)
-						if !isConstant {
-							continue
-						}
-						typeID := c.Type().String()
-						if _, ok := m.Types[typeID]; !ok {
-							// Cannot find a type that this constant belongs to.
-							// So it's not an enum value.
-							continue
-						}
-						switch c.Val().Kind() {
-						case constant.String:
-							m.setEnumStringValue(typeID, constant.StringVal(c.Val()), x.Doc.Text())
-						case constant.Int:
-							v, _ := constant.Int64Val(c.Val())
-							m.setEnumIntValue(typeID, v, x.Doc.Text())
-						default:
-							m.warnf("Constant %q does not have a type of integer or string, and can't be included in an enum", name)
-						}
-					}
-				case *ast.FuncDecl:
-					// Skip functions.
-					return false
-				case *ast.Field:
-					if typ == "" {
-						break
-					}
-					typeID := fmt.Sprintf("%s.%s", packageName, typ)
-					m.setFieldComment(typeID, getFieldName(x), x.Doc.Text())
-				}
-				return true
-			})
+			processFile(packageName, pkg, file, m)
 		}
 	}
 	return
+}
+
+func processFile(packageName string, pkg *packages.Package, file *ast.File, m *Model) {
+	var lastComment string
+	var typ string
+	ast.Inspect(file, func(n ast.Node) bool {
+		switch x := n.(type) {
+		case *ast.TypeSpec:
+			typ = x.Name.String()
+			if !ast.IsExported(typ) {
+				break
+			}
+			typeID := fmt.Sprintf("%s.%s", packageName, typ)
+			m.setTypeComment(typeID, lastComment)
+		case *ast.GenDecl:
+			lastComment = strings.TrimSpace(x.Doc.Text())
+		case *ast.ValueSpec:
+			// Identify constants that make up string and integer enums.
+			for _, name := range x.Names {
+				c, isConstant := pkg.TypesInfo.ObjectOf(name).(*types.Const)
+				if !isConstant {
+					continue
+				}
+				typeID := c.Type().String()
+				if _, ok := m.Types[typeID]; !ok {
+					// Cannot find a type that this constant belongs to.
+					// So it's not an enum value.
+					continue
+				}
+				comments := lastComment
+				if strings.TrimSpace(x.Doc.Text()) != "" {
+					comments = strings.TrimSpace(x.Doc.Text())
+				}
+				switch c.Val().Kind() {
+				case constant.String:
+					m.setEnumStringValue(typeID, constant.StringVal(c.Val()), comments)
+				case constant.Int:
+					v, _ := constant.Int64Val(c.Val())
+					m.setEnumIntValue(typeID, v, comments)
+				default:
+					m.warnf("Constant %q does not have a type of integer or string, and can't be included in an enum", name)
+				}
+			}
+		case *ast.FuncDecl:
+			// Skip functions.
+			return false
+		case *ast.Field:
+			if typ == "" {
+				break
+			}
+			typeID := fmt.Sprintf("%s.%s", packageName, typ)
+			m.setFieldComment(typeID, getFieldName(x), strings.TrimSpace(x.Doc.Text()))
+		}
+		return true
+	})
 }
 
 func getFieldName(field *ast.Field) string {

@@ -1,0 +1,69 @@
+{
+  "types": {
+    "github.com/a-h/gidl/model/tests/docs.CatType": {
+      "id": "github.com/a-h/gidl/model/tests/docs.CatType",
+      "name": "CatType",
+      "desc": "CatType is a type of cat.",
+      "comments": "CatType is a type of cat.",
+      "enum_string": [
+        {
+          "value": "persian",
+          "desc": "Looks grumpy, but is warm and caring."
+        },
+        {
+          "value": "manx",
+          "desc": "Some say that these are relatively aggressive."
+        },
+        {
+          "value": "lion",
+          "desc": "CatTypeLion is a lion."
+        },
+        {
+          "value": "tiger",
+          "desc": "The king of big cats."
+        }
+      ]
+    },
+    "github.com/a-h/gidl/model/tests/docs.Data": {
+      "id": "github.com/a-h/gidl/model/tests/docs.Data",
+      "name": "Data",
+      "desc": "Struct documentation.",
+      "fields": [
+        {
+          "id": "github.com/a-h/gidl/model/tests/docs.Data.A",
+          "name": "A",
+          "desc": "Field documentation.",
+          "is": {
+            "scalar": {
+              "of": "string"
+            },
+            "nullable": false
+          },
+          "comments": "Field documentation."
+        },
+        {
+          "id": "github.com/a-h/gidl/model/tests/docs.Data.Cats",
+          "name": "Cats",
+          "desc": "Field documentation",
+          "is": {
+            "scalar": {
+              "of": "github.com/a-h/gidl/model/tests/docs.CatType"
+            },
+            "nullable": false
+          },
+          "comments": "Field documentation"
+        }
+      ],
+      "comments": "Struct documentation."
+    }
+  },
+  "warnings": [
+    "Name \"Expected\": lastComment: \"\"",
+    "Name \"CatTypePersian\": lastComment: \"Looks grumpy, but is warm and caring.\"",
+    "Name \"CatTypeManx\": lastComment: \"Some say that these are relatively aggressive.\"",
+    "Name \"CatTypeLion\": lastComment: \"\"",
+    "Name \"CatTypeLion\": updating comments%!(EXTRA string=CatTypeLion is a lion.)",
+    "Name \"CatTypeTiger\": lastComment: \"\"",
+    "Name \"CatTypeTiger\": updating comments%!(EXTRA string=The king of big cats.)"
+  ]
+}

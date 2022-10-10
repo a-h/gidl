@@ -7,6 +7,7 @@ import (
 	"github.com/a-h/gidl/model"
 	"github.com/a-h/gidl/model/tests/anonymous"
 	"github.com/a-h/gidl/model/tests/chans"
+	"github.com/a-h/gidl/model/tests/docs"
 	"github.com/a-h/gidl/model/tests/enum"
 	"github.com/a-h/gidl/model/tests/functions"
 	"github.com/a-h/gidl/model/tests/functiontypes"
@@ -62,6 +63,11 @@ func TestGet(t *testing.T) {
 			name:     "function fields and function types are ignored",
 			pkg:      "github.com/a-h/gidl/model/tests/functiontypes",
 			expected: functiontypes.Expected,
+		},
+		{
+			name:     "stuct, field and constant comments are extracted",
+			pkg:      "github.com/a-h/gidl/model/tests/docs",
+			expected: docs.Expected,
 		},
 	}
 
