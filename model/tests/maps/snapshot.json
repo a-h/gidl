@@ -14,7 +14,10 @@
             "nullable": false
           }
         }
-      ]
+      ],
+      "is": {
+        "nullable": false
+      }
     },
     "github.com/a-h/gidl/model/tests/maps.Type": {
       "id": "github.com/a-h/gidl/model/tests/maps.Type",
@@ -94,7 +97,10 @@
             "nullable": true
           }
         }
-      ]
+      ],
+      "is": {
+        "nullable": false
+      }
     }
   }
 }

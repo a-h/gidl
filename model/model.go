@@ -161,7 +161,10 @@ func (m *Model) setEnumStringValue(typeID, value, comment string) {
 	if !ok {
 		return
 	}
-	t.EnumStringValues = append(t.EnumStringValues, EnumValue[string]{Value: value, Description: comment})
+	if t.Is.Enum == nil {
+		t.Is.Enum = &Enum{}
+	}
+	t.Is.Enum.OfStrings = append(t.Is.Enum.OfStrings, EnumValue[string]{Value: value, Description: comment})
 }
 
 func (m *Model) setEnumIntValue(typeID string, value int64, comment string) {
@@ -169,5 +172,8 @@ func (m *Model) setEnumIntValue(typeID string, value int64, comment string) {
 	if !ok {
 		return
 	}
-	t.EnumIntValues = append(t.EnumIntValues, EnumValue[int64]{Value: value, Description: comment})
+	if t.Is.Enum == nil {
+		t.Is.Enum = &Enum{}
+	}
+	t.Is.Enum.OfInts = append(t.Is.Enum.OfInts, EnumValue[int64]{Value: value, Description: comment})
 }

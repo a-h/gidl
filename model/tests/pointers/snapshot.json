@@ -14,7 +14,10 @@
             "nullable": true
           }
         }
-      ]
+      ],
+      "is": {
+        "nullable": false
+      }
     }
   }
 }

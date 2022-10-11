@@ -2,7 +2,10 @@
   "types": {
     "github.com/a-h/gidl/model/tests/functiontypes.Data": {
       "id": "github.com/a-h/gidl/model/tests/functiontypes.Data",
-      "name": "Data"
+      "name": "Data",
+      "is": {
+        "nullable": false
+      }
     }
   },
   "warnings": [

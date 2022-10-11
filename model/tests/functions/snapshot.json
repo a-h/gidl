@@ -14,7 +14,10 @@
             "nullable": false
           }
         }
-      ]
+      ],
+      "is": {
+        "nullable": false
+      }
     },
     "github.com/a-h/gidl/model/tests/functions.DontIgnoreMe": {
       "id": "github.com/a-h/gidl/model/tests/functions.DontIgnoreMe",
@@ -30,7 +33,10 @@
             "nullable": false
           }
         }
-      ]
+      ],
+      "is": {
+        "nullable": false
+      }
     }
   }
 }

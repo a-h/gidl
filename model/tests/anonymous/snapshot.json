@@ -2,7 +2,10 @@
   "types": {
     "github.com/a-h/gidl/model/tests/anonymous.Data": {
       "id": "github.com/a-h/gidl/model/tests/anonymous.Data",
-      "name": "Data"
+      "name": "Data",
+      "is": {
+        "nullable": false
+      }
     }
   },
   "warnings": [

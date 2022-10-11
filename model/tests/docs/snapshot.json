@@ -5,24 +5,29 @@
       "name": "CatType",
       "desc": "CatType is a type of cat.",
       "comments": "CatType is a type of cat.",
-      "enum_string": [
-        {
-          "value": "persian",
-          "desc": "Looks grumpy, but is warm and caring."
+      "is": {
+        "enum": {
+          "ofStrings": [
+            {
+              "value": "persian",
+              "desc": "Looks grumpy, but is warm and caring."
+            },
+            {
+              "value": "manx",
+              "desc": "Some say that these are relatively aggressive."
+            },
+            {
+              "value": "lion",
+              "desc": "CatTypeLion is a lion."
+            },
+            {
+              "value": "tiger",
+              "desc": "The king of big cats."
+            }
+          ]
         },
-        {
-          "value": "manx",
-          "desc": "Some say that these are relatively aggressive."
-        },
-        {
-          "value": "lion",
-          "desc": "CatTypeLion is a lion."
-        },
-        {
-          "value": "tiger",
-          "desc": "The king of big cats."
-        }
-      ]
+        "nullable": false
+      }
     },
     "github.com/a-h/gidl/model/tests/docs.Data": {
       "id": "github.com/a-h/gidl/model/tests/docs.Data",
@@ -54,7 +59,10 @@
           "comments": "Field documentation"
         }
       ],
-      "comments": "Struct documentation."
+      "comments": "Struct documentation.",
+      "is": {
+        "nullable": false
+      }
     }
   }
 }

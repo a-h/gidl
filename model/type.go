@@ -6,18 +6,12 @@ type Type struct {
 	// github.com/a-h/gidl/model.Type
 	ID string `json:"id"`
 	// Name of the wire representation of the type, e.g. field.
-	Name             string              `json:"name"`
-	Description      string              `json:"desc,omitempty"`
-	Fields           []*Field            `json:"fields,omitempty"`
-	Traits           []Trait             `json:"traits,omitempty"`
-	Comments         string              `json:"comments,omitempty"`
-	EnumStringValues []EnumValue[string] `json:"enum_string,omitempty"`
-	EnumIntValues    []EnumValue[int64]  `json:"enum_int,omitempty"`
-}
-
-type EnumValue[T string | int64] struct {
-	Value       T      `json:"value"`
-	Description string `json:"desc"`
+	Name        string   `json:"name"`
+	Description string   `json:"desc,omitempty"`
+	Fields      []*Field `json:"fields,omitempty"`
+	Traits      []Trait  `json:"traits,omitempty"`
+	Comments    string   `json:"comments,omitempty"`
+	Is          Is       `json:"is"`
 }
 
 type Trait string
@@ -61,6 +55,7 @@ type Field struct {
 
 type Is struct {
 	Scalar *Scalar `json:"scalar,omitempty"`
+	Enum   *Enum   `json:"enum,omitempty"`
 	Array  *Array  `json:"array,omitempty"`
 	Map    *Map    `json:"map,omitempty"`
 	// Nullable is set to true if the field type is a pointer.
@@ -69,6 +64,14 @@ type Is struct {
 }
 type Scalar struct {
 	Of TypeName `json:"of,omitempty"`
+}
+type Enum struct {
+	OfStrings []EnumValue[string] `json:"ofStrings,omitempty"`
+	OfInts    []EnumValue[int64]  `json:"ofInts,omitempty"`
+}
+type EnumValue[T string | int64] struct {
+	Value       T      `json:"value"`
+	Description string `json:"desc"`
 }
 type Array struct {
 	Of Is `json:"of,omitempty"`

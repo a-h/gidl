@@ -14,11 +14,17 @@
             "nullable": false
           }
         }
-      ]
+      ],
+      "is": {
+        "nullable": false
+      }
     },
     "github.com/a-h/gidl/model/tests/generics.DataOfT[T string|int]": {
       "id": "github.com/a-h/gidl/model/tests/generics.DataOfT[T string|int]",
-      "name": "DataOfT"
+      "name": "DataOfT",
+      "is": {
+        "nullable": false
+      }
     }
   },
   "warnings": [
